@@ -44,7 +44,7 @@ public class DesignTacoController{
     public String processTaco(Taco taco, @ModelAttribute TacoOrder tacoOrder) {
         tacoOrder.addTaco(taco);
         log.info("Processing taco: {}", taco);
-        return "redirect:/design";
+        return "redirect:/orders/current";
     }
 
     @ModelAttribute(name = "tacoOrder")
