@@ -28,13 +28,11 @@ public class DesignTacoController{
 
 
     private final IngredientRepository ingredientRepo;
-    private final TaskExecutionProperties taskExecutionProperties;
 
 
     @Autowired
-    public DesignTacoController(IngredientRepository ingredientRepo, TaskExecutionProperties taskExecutionProperties) {
+    public DesignTacoController(IngredientRepository ingredientRepo) {
         this.ingredientRepo = ingredientRepo;
-        this.taskExecutionProperties = taskExecutionProperties;
     }
 
     @ModelAttribute
