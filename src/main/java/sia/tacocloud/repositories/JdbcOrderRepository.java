@@ -7,7 +7,10 @@ import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.PreparedStatementCreatorFactory;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 import sia.tacocloud.domainEntities.Ingredient;
 import sia.tacocloud.domainEntities.IngredientRef;
 import sia.tacocloud.domainEntities.Taco;
@@ -27,7 +30,7 @@ public class JdbcOrderRepository implements OrderRepository{
 
     private JdbcOperations jdbcOperations;
 
-    @Autowired
+
     public JdbcOrderRepository(JdbcOperations jdbcOperations) {
         this.jdbcOperations = jdbcOperations;
     }
@@ -75,8 +78,10 @@ public class JdbcOrderRepository implements OrderRepository{
         for(Taco taco : tacos) {
             saveTaco(orderId, i++, taco);
         }
+
         return order;
     }
+
 
     private long saveTaco(Long orderId, int orderKey, Taco taco) {
 
@@ -102,7 +107,7 @@ public class JdbcOrderRepository implements OrderRepository{
         taco.setId(tacoId);
 
         List<IngredientRef> ingredientsRefs = taco.getIngredients()
-                .stream().map(ingredient -> new IngredientRef(ingredient.getName()))
+                .stream().map(ingredient -> new IngredientRef(ingredient.getId()))
                 .collect(Collectors.toList());
 
         saveIngredientsRefs(tacoId, ingredientsRefs);
@@ -118,14 +123,8 @@ public class JdbcOrderRepository implements OrderRepository{
         for(IngredientRef ingredientRef : ingredientsRefs) {
             jdbcOperations.update(
                     "insert into Ingredient_Ref (ingredient, taco, taco_key) "
-            + "values (?,?,?)", ingredientRef, tacoId, key++);
+            + "values (?,?,?)", ingredientRef.getIngredient(), tacoId, key++);
         }
 
     }
-
-
-
-
-
-
 }
