@@ -12,17 +12,18 @@ import org.springframework.data.relational.core.mapping.Table;
 @Data
 @Table
 @AllArgsConstructor
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force = true)
+@NoArgsConstructor(access= AccessLevel.PROTECTED, force = true)
 public class Ingredient implements Persistable<String> {
 
     @Id
     private final String id;
+
     private final String name;
     private final Type type;
 
     @Override
     public boolean isNew() {
-        return true;
+        return id == null;
     }
 
     public enum Type{
