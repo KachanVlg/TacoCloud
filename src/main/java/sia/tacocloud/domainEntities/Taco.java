@@ -21,18 +21,18 @@ public class Taco {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private final Long id;
+    private Long id;
 
-    private final Date createdAt = new Date();
+    private  Date createdAt = new Date();
 
     @NotNull
     @Size(min = 5, message="Name must be at least 5 characters long")
-    private final String name;
+    private  String name;
 
     @NotNull
     @Size(min=1, message = "You must choose at least 1 ingredient")
     @ManyToMany
-    private final List<Ingredient> ingredients;
+    private List<Ingredient> ingredients;
 
     public void addIngredient(Ingredient ingredient) {
         this.ingredients.add(ingredient);
