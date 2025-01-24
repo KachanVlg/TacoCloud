@@ -54,7 +54,8 @@ public class TacoOrder implements Serializable {
 
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<Taco> tacos = new ArrayList<Taco>();
+    @JoinColumn(name = "taco_order")
+    private List<Taco> tacos = new ArrayList<>();
 
     public void addTaco(Taco taco){
         this.tacos.add(taco);
