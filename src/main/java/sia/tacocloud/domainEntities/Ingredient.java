@@ -13,7 +13,6 @@ import sia.tacocloud.repositories.IngredientRepository;
 @Data
 @Entity
 @AllArgsConstructor
-@RequiredArgsConstructor
 @NoArgsConstructor(access= AccessLevel.PROTECTED, force = true)
 public class Ingredient{
 
