@@ -43,7 +43,12 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/design", "/orders").hasRole("USER")
-                        .requestMatchers("/", "/**").permitAll()).build();
+                        .requestMatchers("/", "/**").permitAll()
+                )
+                .formLogin(form -> form
+                        .loginPage("/login") // Настраиваем свою страницу для входа
+                )
+                .build();
     }
 
 
