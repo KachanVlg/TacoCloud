@@ -4,12 +4,14 @@ package sia.tacocloud.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import sia.tacocloud.domainEntities.User;
+import sia.tacocloud.repositories.UserRepository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,20 +26,16 @@ public class SecurityConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService(PasswordEncoder encoder) {
+    public UserDetailsService userDetailsService(UserRepository userRepo) {
 
-        List<UserDetails> userList = new ArrayList<>();
+        return username -> {
+            User user = userRepo.findByUsername(username);
+            if(user != null) return user;
 
-        userList.add(new User("buzz",
-                encoder.encode("password"),
-                Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"))));
-
-        userList.add(new User("woody",
-                encoder.encode("password"),
-                Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"))));
-
-        return new InMemoryUserDetailsManager(userList);
-
+            throw new UsernameNotFoundException("User ‘" + username + "’ not found");
+        };
     }
+
+
 
 }
